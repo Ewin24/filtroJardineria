@@ -6,7 +6,7 @@ using Persistence.Entities;
 
 namespace Domain.Interfaces
 {
-    public interface IGamaProducto : IGenericString<GamaProducto>
+    public interface IGamaProducto : IGeneric<GamaProducto>
     {
 
     }

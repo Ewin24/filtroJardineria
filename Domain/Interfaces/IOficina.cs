@@ -6,7 +6,7 @@ using Persistence.Entities;
 
 namespace Domain.Interfaces
 {
-    public interface IOficina : IGenericString<Oficina>
+    public interface IOficina : IGeneric<Oficina>
     {
 
     }

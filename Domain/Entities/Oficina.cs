@@ -4,7 +4,7 @@ using Domain.Entities;
 
 namespace Persistence.Entities;
 
-public partial class Oficina : BaseEntityString
+public partial class Oficina : BaseEntity
 {
     // public string CodigoOficina { get; set; } = null!;
 

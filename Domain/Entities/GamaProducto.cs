@@ -4,7 +4,7 @@ using Domain.Entities;
 
 namespace Persistence.Entities;
 
-public partial class GamaProducto : BaseEntityString
+public partial class GamaProducto : BaseEntity
 {
     // public string Gama { get; set; } = null!;
 

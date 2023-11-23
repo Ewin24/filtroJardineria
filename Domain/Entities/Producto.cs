@@ -4,7 +4,7 @@ using Domain.Entities;
 
 namespace Persistence.Entities;
 
-public partial class Producto : BaseEntityString
+public partial class Producto : BaseEntity
 {
     // public string CodigoProducto { get; set; } = null!;
 

@@ -8,6 +8,6 @@ namespace Domain.Interfaces
 {
     public interface IPedido : IGeneric<Pedido>
     {
-        
+        Task<IEnumerable<object>> Query9Requerid();
     }
 }
