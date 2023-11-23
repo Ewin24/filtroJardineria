@@ -8,6 +8,6 @@ namespace Domain.Interfaces
 {
     public interface ICliente : IGeneric<Cliente>
     {
-        
+        Task<IEnumerable<object>> Query4MultiInt();
     }
 }

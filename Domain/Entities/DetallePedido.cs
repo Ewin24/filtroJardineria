@@ -6,7 +6,7 @@ namespace Persistence.Entities;
 
 public partial class DetallePedido : BaseEntity
 {
-    // public int CodigoPedido { get; set; }
+    public int Id { get; set; }
 
     public string CodigoProducto { get; set; } = null!;
 

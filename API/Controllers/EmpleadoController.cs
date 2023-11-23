@@ -10,12 +10,12 @@ using Microsoft.AspNetCore.Mvc;
 using Persistence.Entities;
 
 namespace API.Controllers;
-public class ClienteController : BaseController
+public class EmpleadoController : BaseController
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
-    public ClienteController(IUnitOfWork unitOfWork, IMapper mapper)
+    public EmpleadoController(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
@@ -24,68 +24,56 @@ public class ClienteController : BaseController
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-
-    public async Task<ActionResult<IEnumerable<Cliente>>> Get()
+    public async Task<ActionResult<IEnumerable<Empleado>>> Get()
     {
-        var items = await _unitOfWork.Clientes.GetAllAsync();
-        return Ok(items);
-    }
-
-
-    [HttpGet("Query4MultiInt")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-
-    public async Task<ActionResult<IEnumerable<Cliente>>> GetQuery4MultiInt()
-    {
-        var items = await _unitOfWork.Clientes.Query4MultiInt();
-        return Ok(items);
+        var entidades = await _unitOfWork.Empleados.GetAllAsync();
+        return _mapper.Map<List<Empleado>>(entidades);
     }
 
     [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<ClienteDto>> Get(int id)
+    public async Task<ActionResult<EmpleadoDto>> Get(int id)
     {
-        var entidad = await _unitOfWork.Clientes.GetByIdAsync(id);
+        var entidad = await _unitOfWork.Empleados.GetByIdAsync(id);
         if (entidad == null)
         {
             return NotFound();
         }
-        return _mapper.Map<ClienteDto>(entidad);
+        return _mapper.Map<EmpleadoDto>(entidad);
     }
 
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<Cliente>> Post(ClienteDto ClienteDto)
+    public async Task<ActionResult<Empleado>> Post(EmpleadoDto EmpleadoDto)
     {
-        var entidad = _mapper.Map<Cliente>(ClienteDto);
-        this._unitOfWork.Clientes.Add(entidad);
+        var entidad = _mapper.Map<Empleado>(EmpleadoDto);
+        this._unitOfWork.Empleados.Add(entidad);
         await _unitOfWork.SaveAsync();
         if (entidad == null)
         {
             return BadRequest();
         }
-        ClienteDto.Id = entidad.Id;
-        return CreatedAtAction(nameof(Post), new { id = ClienteDto.Id }, ClienteDto);
+        EmpleadoDto.Id = entidad.Id;
+        return CreatedAtAction(nameof(Post), new { id = EmpleadoDto.Id }, EmpleadoDto);
     }
 
     [HttpPut("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<ClienteDto>> Put(int id, [FromBody] ClienteDto ClienteDto)
+    public async Task<ActionResult<EmpleadoDto>> Put(int id, [FromBody] EmpleadoDto EmpleadoDto)
     {
-        if (ClienteDto == null)
+        if (EmpleadoDto == null)
         {
             return NotFound();
         }
-        var entidades = _mapper.Map<Cliente>(ClienteDto);
-        _unitOfWork.Clientes.Update(entidades);
+        var entidades = _mapper.Map<Empleado>(EmpleadoDto);
+        _unitOfWork.Empleados.Update(entidades);
         await _unitOfWork.SaveAsync();
-        return ClienteDto;
+        return EmpleadoDto;
     }
 
     [HttpDelete("{id}")]
@@ -93,12 +81,12 @@ public class ClienteController : BaseController
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete(int id)
     {
-        var entidad = await _unitOfWork.Clientes.GetByIdAsync(id);
+        var entidad = await _unitOfWork.Empleados.GetByIdAsync(id);
         if (entidad == null)
         {
             return NotFound();
         }
-        _unitOfWork.Clientes.Delete(entidad);
+        _unitOfWork.Empleados.Delete(entidad);
         await _unitOfWork.SaveAsync();
         return NoContent();
     }

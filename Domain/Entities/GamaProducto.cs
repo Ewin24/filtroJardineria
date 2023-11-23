@@ -6,7 +6,7 @@ namespace Persistence.Entities;
 
 public partial class GamaProducto : BaseEntity
 {
-    // public string Gama { get; set; } = null!;
+    public int Id { get; set; }
 
     public string? DescripcionTexto { get; set; }
 

@@ -9,7 +9,7 @@ Explicacion de la consulta
     //9. Devuelve un listado con el código de pedido, código de cliente, fecha esperada y fecha de entrega de los pedidos que no han sido entregados a tiempo.
 ## endpoint consulta: 
 
-    controller/Query9Requerid
+    pedido/Query9Requerid
 
 ## codigo:
 ```
@@ -21,3 +21,42 @@ Explicacion de la consulta
         return await result.ToListAsync();
     }
 ```
+
+
+
+// 10. Devuelve las oficinas donde no trabajan ninguno de los empleados que hayan sido los representantes de ventas de algún cliente que haya realizado la compra de algún producto de la gama Frutales.
+## endpoint consulta: 
+oficina/Query10MultiEx
+
+public async Task<IEnumerable<object>> Query10MultiEx()
+{
+        var result = from o in context.Oficina
+                    where !(
+                        from ofi in context.Oficina
+                        join e in context.Empleado on ofi.codigo_oficina equals e.codigo_oficina
+                        join c in context.Cliente on e.codigo_empleado equals c.codigo_empleado_rep_ventas
+                        join pe in context.Pedido on c.codigo_cliente equals pe.codigo_cliente
+                        join dp in context.DetallePedido on pe.codigo_pedido equals dp.codigo_pedido
+                        join pr in context.Producto on dp.codigo_producto equals pr.codigo_producto
+                        where pr.gama == "Frutales"
+                        select ofi.codigo_oficina
+                    ).Contains(o.codigo_oficina)
+                    select o;
+        return await result.ToListAsync();
+    }
+
+
+
+    // 5. Devuelve el nombre de los clientes que no hayan hecho pagos y el nombre de sus representantes junto con la ciudad de la oficina a la que pertenece el representante.
+## endpoint consulta: 
+cliente/Query4MultiInt
+
+public async Task<IEnumerable<object>> Query4MultiInt()
+        {
+            var result = from c in _context.Clientes
+                         join p in _context.Pagos on c.Id equals p.Id
+                         join e in _context.Empleados on c.CodigoEmpleadoRepVentas equals e.Id
+                         join o in _context.Oficinas on e.Id equals o.Id
+                         select new { c.NombreCliente, e.Nombre, e.Apellido1, e.Apellido2, o.Ciudad };
+            return await result.ToListAsync();
+        }
