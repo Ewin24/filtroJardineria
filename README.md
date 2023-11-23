@@ -1,5 +1,7 @@
 Edwin Trigos Guevara
 
+# la base de datos se modifico, cambiando los insert a id enteros, este es el script
+
 Enunciado de la consulta
 EndPoint de la Consulta
 Codigo de la consulta
@@ -118,4 +120,24 @@ public async Task<object> Query2WithOperatorBasic()
 
             return nombreProducto;
         }
+```
+
+
+// 1. Devuelve el listado de clientes indicando el nombre del cliente y cuántos pedidos ha realizado 
+## endpoint consulta: 
+cliente/Query1Variate1
+
+```
+public async Task<List<object>> Query1Variate1()
+{
+    var query1 = await _context.Cliente
+        .GroupJoin(_context.Pedido, c => c.CodigoCliente, p => p.CodigoCliente, (cliente, pedidos) => new
+        {
+            cliente.NombreCliente,
+            CantidadPedidos = pedidos.Count()
+        })
+        .ToListAsync<object>();
+
+    return query1;
+}
 ```

@@ -26,5 +26,17 @@ namespace Aplication.Repository
                          select new { c.NombreCliente, e.Nombre, e.Apellido1, e.Apellido2, o.Ciudad };
             return await result.ToListAsync();
         }
+        public async Task<List<object>> Query1Variate1()
+        {
+            var query1 = await _context.Clientes
+                .GroupJoin(_context.Pedidos, c => c.Id, p => p.CodigoCliente, (cliente, pedidos) => new
+                {
+                    cliente.NombreCliente,
+                    CantidadPedidos = pedidos.Count()
+                })
+                .ToListAsync<object>();
+
+            return query1;
+        }
     }
 }

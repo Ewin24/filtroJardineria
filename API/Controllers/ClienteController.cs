@@ -41,6 +41,15 @@ public class ClienteController : BaseController
         var items = await _unitOfWork.Clientes.Query4MultiInt();
         return Ok(items);
     }
+    [HttpGet("Query1")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+
+    public async Task<ActionResult<IEnumerable<Cliente>>> GetQuery1MultiInt()
+    {
+        var items = await _unitOfWork.Clientes.Query1Variate1();
+        return Ok(items);
+    }
 
     [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
