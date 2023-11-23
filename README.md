@@ -27,6 +27,7 @@ Explicacion de la consulta
 // 10. Devuelve las oficinas donde no trabajan ninguno de los empleados que hayan sido los representantes de ventas de algún cliente que haya realizado la compra de algún producto de la gama Frutales.
 ## endpoint consulta: 
 oficina/Query10MultiEx
+```
 
 public async Task<IEnumerable<object>> Query10MultiEx()
 {
@@ -44,12 +45,14 @@ public async Task<IEnumerable<object>> Query10MultiEx()
                     select o;
         return await result.ToListAsync();
     }
+```
 
 
 
     // 5. Devuelve el nombre de los clientes que no hayan hecho pagos y el nombre de sus representantes junto con la ciudad de la oficina a la que pertenece el representante.
 ## endpoint consulta: 
 cliente/Query4MultiInt
+```
 
 public async Task<IEnumerable<object>> Query4MultiInt()
         {
@@ -60,3 +63,59 @@ public async Task<IEnumerable<object>> Query4MultiInt()
                          select new { c.NombreCliente, e.Nombre, e.Apellido1, e.Apellido2, o.Ciudad };
             return await result.ToListAsync();
         }
+```
+
+
+// 14. Devuelve un listado de los 20 productos más vendidos y el número total de unidades que se han vendido de cada uno. El listado deberá estar ordenado por el número total de unidades vendidas.
+## endpoint consulta: 
+detallePedido/Query14Summary
+
+```
+public async Task<IEnumerable<object>> Query14Summary()
+        {
+            var result = (from dp in _context.DetallePedidos
+                          group dp by dp.Id into g
+                          orderby g.Sum(dp => dp.Cantidad) descending
+                          select new { CodigoProducto = g.Key, UnidadesVendidas = g.Sum(dp => dp.Cantidad) }).Take(20);
+            return await result.ToListAsync();
+        }
+```
+
+
+// 18. Lista las ventas totales de los productos que hayan facturado más de 3000 euros. Se mostrará el nombre, unidades vendidas, total facturado y total facturado con impuestos (21% IVA).
+## endpoint consulta: 
+detallePedido/Query18Summary
+
+```
+public async Task<IEnumerable<object>> Query18Summary()
+        {
+            var result = from dp in _context.DetallePedidos
+                         group dp by dp.Id into g
+                         let totalFacturado = g.Sum(dp => dp.PrecioUnidad * dp.Cantidad)
+                         where totalFacturado > 3000
+                         select new
+                         {
+                             CodigoProducto = g.Key,
+                             UnidadesVendidas = g.Sum(dp => dp.Cantidad),
+                             TotalFacturado = totalFacturado,
+                             TotalFacturadoConImpuestos = Math.Round(totalFacturado * 1,21)
+                         };
+            return await result.ToListAsync();
+        }
+```
+
+// 2. Devuelve el nombre del producto que tenga el precio de venta más caro.
+## endpoint consulta: 
+productos/Query2WithOperatorBasic
+
+```
+public async Task<object> Query2WithOperatorBasic()
+        {
+            var nombreProducto = await _context.Productos
+                .Where(p => p.PrecioVenta == _context.Productos.Max(pr => pr.PrecioVenta))
+                .Select(p => p.Nombre)
+                .ToListAsync();
+
+            return nombreProducto;
+        }
+```

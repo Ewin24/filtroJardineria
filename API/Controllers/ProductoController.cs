@@ -27,6 +27,15 @@ public class ProductoController : BaseController
         return _mapper.Map<List<Producto>>(entidades);
     }
 
+    [HttpGet("Query2WithOperatorBasic")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<object>> GetQuery2WithOperatorBasic()
+    {
+        var entidades = await _unitOfWork.Productos.Query2WithOperatorBasic();
+        return entidades;
+    }
+
     [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

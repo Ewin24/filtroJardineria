@@ -29,6 +29,23 @@ public class DetallePedidoController : BaseController
         var entidades = await _unitOfWork.DetallePedidos.GetAllAsync();
         return _mapper.Map<List<DetallePedido>>(entidades);
     }
+    [HttpGet("Query14Summary")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<IEnumerable<DetallePedido>>> GetQuery14Summary()
+    {
+        var entidades = await _unitOfWork.DetallePedidos.Query14Summary();
+        return _mapper.Map<List<DetallePedido>>(entidades);
+    }
+
+    [HttpGet("Query18Summary")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<IEnumerable<DetallePedido>>> GetQuery18Summary()
+    {
+        var entidades = await _unitOfWork.DetallePedidos.Query18Summary();
+        return _mapper.Map<List<DetallePedido>>(entidades);
+    }
 
     [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
